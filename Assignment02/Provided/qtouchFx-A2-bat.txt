@@ -1,0 +1,71 @@
+echo off
+echo '............................................'
+echo '..     ALGONQUIN COLLEGE - JAP - 25F      ..'
+echo '............................................'
+echo '                  [JAVAFX]                  '
+echo '  ........=====...........................  '
+echo '  ......=+===.............................  '
+echo '  ......===+=........=+...................  '
+echo '  .......===.........=+...=+.=+..+=...+=..  '
+echo '  ...=========....==.=+.+=.=.+=+===.+=.=..  '
+echo '  ....==========...==+..====...==...====..  '
+echo '  ..==.=======............................  '
+echo '  ...=============........................  '
+echo '.                                           '
+echo '.         [Team: Paulo Sousa / God]         '
+echo '............................................'
+rem set "arg=%1"
+rem if "%arg%"=="" set "arg=qtouch"
+rem echo Parameter value: %arg%
+
+REM Set up directories
+set SRC_DIR=src
+set DOC_DIR=doc
+set BIN_DIR=bin
+set RES_DIR=resources
+set IMG_DIR=images
+set MAIN_CLASS=qtouch.QTouchGUI
+set JAR_NAME=QTouchApp.jar
+
+REM === PATH TO JAVAFX SDK ===
+REM Update this to your actual JavaFX SDK path
+set JAVAFX_SDK=C:\SOFT\COPY\dev\java\javafx
+set JAVAFX_LIB=%JAVAFX_SDK%\lib
+
+echo 'Starting Javadoc ...........................'
+REM Clean previous doc
+echo Cleaning previous javadoc...
+rd /s /q %DOC_DIR%
+javadoc -d %DOC_DIR% %SRC_DIR%\qtouch\*.java
+
+echo 'Compiling ..................................'
+REM Clean previous build
+echo Cleaning previous build...
+rd /s /q %BIN_DIR%
+mkdir %BIN_DIR%
+REM === COMPILE JAVA SOURCE FILES WITH JAVAFX MODULES ===
+echo Compiling JavaFX project...
+javac --module-path %JAVAFX_LIB% --add-modules javafx.controls,javafx.fxml -d %BIN_DIR% %SRC_DIR%\qtouch\*.java
+
+echo 'Creating Jar ...............................'
+REM Copy resources and images to bin
+echo Copying resources and images...
+xcopy /s /y %RES_DIR% %BIN_DIR%\resources\
+xcopy /s /y %IMG_DIR% %BIN_DIR%\images\
+REM Create manifest file
+echo Creating manifest...
+echo Main-Class: %MAIN_CLASS% > manifest.txt
+cd %BIN_DIR%
+REM Create JAR file
+jar cfm ../%JAR_NAME% ../manifest.txt * 
+cd ..
+REM Clean up manifest
+del manifest.txt
+
+REM Run the JAR
+echo 'Running Jar ................................'
+REM === RUN THE JAR WITH JAVAFX MODULES ===
+echo Running JavaFX application...
+java --module-path %JAVAFX_LIB% --add-modules javafx.controls,javafx.fxml -jar %JAR_NAME%
+
+echo 'End ........................................'

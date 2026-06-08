@@ -1,0 +1,63 @@
+echo off
+echo '............................................'
+echo '..     ALGONQUIN COLLEGE - JAP - 25F      ..'
+echo '............................................'
+echo '                                            '
+echo '  ........=====...........................  '
+echo '  ......=+===.............................  '
+echo '  ......===+=........=+...................  '
+echo '  .......===.........=+...=+.=+..+=...+=..  '
+echo '  ...=========....==.=+.+=.=.+=+===.+=.=..  '
+echo '  ....==========...==+..====...==...====..  '
+echo '  ..==.=======............................  '
+echo '  ...=============........................  '
+echo '.                                           '
+echo '.         [Team: Paulo Sousa / God]         '
+echo '............................................'
+rem set "arg=%1"
+rem if "%arg%"=="" set "arg=qtouch"
+rem echo Parameter value: %arg%
+
+REM Set up directories
+set SRC_DIR=src
+set DOC_DIR=doc
+set BIN_DIR=bin
+set RES_DIR=resources
+set IMG_DIR=images
+set MAIN_CLASS=qtouch.QTouchGUI
+set JAR_NAME=QTouchApp.jar
+
+echo 'Starting Javadoc ...........................'
+REM Clean previous doc
+echo Cleaning previous javadoc...
+rd /s /q %DOC_DIR%
+javadoc -d %DOC_DIR% %SRC_DIR%\qtouch\*.java
+
+echo 'Compiling ..................................'
+REM Clean previous build
+echo Cleaning previous build...
+rd /s /q %BIN_DIR%
+mkdir %BIN_DIR%
+REM Compile Java source files
+javac -d %BIN_DIR% %SRC_DIR%\qtouch\*.java
+
+echo 'Creating Jar ...............................'
+REM Copy resources and images to bin
+echo Copying resources and images...
+xcopy /s /y %RES_DIR% %BIN_DIR%\resources\
+xcopy /s /y %IMG_DIR% %BIN_DIR%\images\
+REM Create manifest file
+echo Creating manifest...
+echo Main-Class: %MAIN_CLASS% > manifest.txt
+cd %BIN_DIR%
+REM Create JAR file
+jar cfm ../%JAR_NAME% ../manifest.txt * 
+cd ..
+REM Clean up manifest
+del manifest.txt
+
+REM Run the JAR
+echo 'Running Jar ................................'
+java -jar %JAR_NAME%
+
+echo 'End ........................................'

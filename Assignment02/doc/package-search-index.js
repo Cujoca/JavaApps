@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"qmillionaire"},{"l":"qmillionaire.controller"},{"l":"qmillionaire.model"},{"l":"qmillionaire.view"}];updateSearchResults();
