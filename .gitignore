@@ -19,3 +19,4 @@ Thumbs.db
 
 # zip files
 *.zip
+.zed/settings.json
