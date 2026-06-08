@@ -16,3 +16,6 @@
 # OS / editor cruft
 Thumbs.db
 .DS_Store
+
+# zip files
+*.zip
